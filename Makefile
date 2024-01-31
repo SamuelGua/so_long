@@ -24,10 +24,10 @@ libft			= ft_isdigit.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c\
 				ft_lstlast_bonus.c  ft_lstnew_bonus.c ft_free.c get_next_line.c\
 
 SO_LONG_PATH	= $(so_long:%=src/so_long/%)
-so_long		= main.c \
-				
+so_long		= parsing.c valid_way.c \
+		
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-
+CC = cc
 #CFLAGS			:= -Wall -Wextra -Werror
 CFLAGS			+= -g3
 CCFLAGS			:= -I include
@@ -39,12 +39,12 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS)
-		@$(CC) $(OBJS) mlx/libmlx_Linux.a -L mlx -lXext -lX11 -o $(NAME) 
-		@echo "$(COLOR_GREEN)$(COLOR_BOLD)Compilation fini 👍 $(COLOR_RESET)"
+		$(CC) $(OBJS) -o $(NAME) 
+		@echo "$(COLOR_RED)$(COLOR_BOLD)Compilation fini  MAKEFILE INCOMPLET👍 $(COLOR_RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c include/libft.h include/so_long.h
 		@$(DIR_DUP)
-		@$(CC) $(CFLAGS) $(CCFLAGS) -c -o $@ $<
+		$(CC) $(CFLAGS) $(CCFLAGS) -c -o $@ $<
 
 clean:
 	@$(RM) $(OBJS)

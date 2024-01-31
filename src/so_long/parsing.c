@@ -5,129 +5,186 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/29 15:35:37 by scely             #+#    #+#             */
-/*   Updated: 2023/12/29 17:03:36 by scely            ###   ########.fr       */
+/*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
+/*   Updated: 2024/01/31 15:39:10 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	nb_line(char **av)
+typedef struct maps_items
 {
-	char	*line;
-	int		i;
-	int		fd;
+	int p;
+	int c;
+	int e;
+}	t_items;
+
+typedef struct maps_size
+{
+	int		y; // abscisse | nombres de lignes
+	int		x; // ordonne | nombres de colonnes
+	char	**maps; // tout mon fichier
+	t_items maps_size;
+}	t_maps_size;
+
+int len_line(char *av)
+{
+	int	i;
 
 	i = 0;
+	while (av[i] && av[i] != '\n')
+		i++;
+	return (i);
+}
+
+int	size_map(char **av, t_maps_size **maps)
+{
+	int		fd;
+	char	*line;
+
 	fd = open(av[1], O_RDONLY);
-	if (fd < 0)
-		return (0);
 	line = get_next_line(fd);
-	while (line)
+	if (line == NULL)
+		return (1);
+	(*maps)->y = 1;
+	(*maps)->x = ft_strlen(line);
+	while (line != NULL)
 	{
-		if (line[0] != '1' && line[0] != '\0')
-		{
-			free(line);
-			close(fd);
-			return (0);
-		}
 		free(line);
 		line = get_next_line(fd);
-	i++;
+		if (line == NULL)
+			return (1);
+		(*maps)->y++;
 	}
 	free(line);
 	close(fd);
-	return (i);
+	return (0);
 }
 
-int	good_carac(char *line)
+int	fill_maps(char **av, t_maps_size **maps)
 {
+	int		fd;
+	char	*line;
 	int		i;
 
 	i = 0;
-	while (line[i])
+	fd = open(av[1], O_RDONLY);
+	(*maps)->maps = ft_calloc(sizeof(char *), ((*maps)->y + 1));
+
+	if ((*maps)->maps == NULL)
+		return (1);
+	(*maps)->maps[(*maps)->y] = (char *) '\0';
+	while (!(*maps)->maps[i] && i < (*maps)->y + 1)
 	{
-		if (line[i] != '0' && line[i] != '1' && line[i] != '\n'
-			&& line[i] != 'C' && line[i] != 'E' && line[i] != 'P')
-			return (0);
+		(*maps)->maps[i] = get_next_line(fd);
 		i++;
 	}
-	return (i);
+	i = 0;
+	while ((*maps)->maps[i])
+	{
+		if (ft_strlen((*maps)->maps[i]) == 1)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-int	check_error(char **str)
+int	check_param(char *str)
 {
-	int		i;
-	int		k;
-	int		e_xite;
-	int		p_erso;
-	int		j;
+	int	i;
 
 	i = 0;
-	k = ft_strlen(str[0]);
-	e_xite = 0;
-	p_erso = 0;
 	while (str[i])
 	{
-		if (k != ft_strlen(str[i]))
-			return (ft_putstr_fd("Wrong size of maps", 1), -1);
-		if (good_carac(str[i]) == 0)
-			return (ft_putstr_fd("Wrong objects", 1), -1);
-		if (str[i][0] != '1' || str[i][k - 2] != '1')
-			return (ft_putstr_fd("Wrong wall", 1), -1);
-		if (ft_strchr(str[i], 'E') != 0)
-			e_xite += 1;
-		if (ft_strchr(str[i], 'P') != 0)
-			p_erso += 1;
+		if (str[i] != '0' && str[i] != '1' && str[i] != 'C'
+				&& str[i] != 'E' && str[i] != 'P' && str[i] != '\n')
+			return (1);
 		i++;
 	}
-	j = 0;
-	while (j <= k - 2)
+	return (0);
+}
+
+void init_struct_size(t_items *items)
+{
+	items->c = 0;
+	items->p = 0;
+	items->e = 0;
+}
+
+int	check_item(t_maps_size *maps)
+{
+	int i;
+	int j;
+
+	i = 0;
+
+	while (maps->maps[i])
 	{
-		if (str[0][j] != str[i -1][j] && str[i -1][j] != '1'
-			&& str[i -1][j] != '1')
-			return (ft_putstr_fd("Wrong size of maps", 1), -1);
-		j++;
+		j = 0;
+		while (maps->maps[i][j])
+		{
+			if (maps->maps[i][j] == 'P')
+				maps->maps_size.p++;
+			if (maps->maps[i][j] == 'C')
+				maps->maps_size.c++;
+			if (maps->maps[i][j] == 'E')
+				maps->maps_size.e++;
+			j++;
+		}
+		i++;
 	}
-	if (k == i - 1)
-		return (ft_putstr_fd("Square map", 1), -1);
-	if (e_xite != 1 || p_erso != 1)
-		return (ft_putstr_fd("Wrong number of Exit or Personage", 1), -1);
+	if (maps->maps_size.p != 1 || maps->maps_size.c < 1 || maps->maps_size.e != 1)
+		return (1);
+	return (0);
+}
+
+int	check_maps(t_maps_size **maps)
+{
+	int	x;
+	int y;
+	t_items items;
+
+	y = 0;
+	init_struct_size(&items);
+	while ((*maps)->maps[y] != NULL)
+	{
+		if (check_param((*maps)->maps[y]) != 0 || check_item((*maps)) != 0)
+			return (ft_putstr_fd("mauvaise param\n", 1), 1);
+		if (len_line((*maps)->maps[0]) != len_line((*maps)->maps[y]) && y != 0)
+			return (ft_putstr_fd("mauvaise len\n", 1), 1);
+		printf("%s", (*maps)->maps[y]);
+		y++;
+	}
 	return (0);
 }
 
 int	main(int ac, char **av)
 {
-	char	**doublon;
-	int		fd;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = nb_line(void);
-	doublon = malloc(sizeof(char *) * (j + 1));
-	if (!doublon)
-		return (free(doublon), -1);
-	doublon[j] = NULL;
-	if (ac != 2)
+	t_maps_size	*maps_param;
+	int			i;
+	if (av[1] == NULL)
 		return (1);
-	fd = open(av[1], O_RDONLY);
-	if (fd < 0)
-		return (perror("Invalid fd"), -1);
-	while (i <= j)
-		doublon[i++] = get_next_line(fd);
-	if (check_error(doublon) != 0 || ways(doublon) == -1 )
-	{
-		free(doublon);
-		close(fd);
-		return (0);
-	}
-	close(fd);
-	// for (i = 0; doublon[i] != NULL; i++)
-	// 	printf("%s", doublon[i]);
 	i = 0;
-	while (doublon[i])
-		free(doublon[i++]);
-	free(doublon);
-	close(fd);
+	maps_param = ft_calloc(sizeof(t_maps_size), 1);
+	size_map(av, &maps_param);	
+
+	if(fill_maps(av, &maps_param) != 0)
+	 {
+		if ((*maps_param).maps != NULL)
+			ft_free((*maps_param).maps);
+		return (ft_putstr_fd("Error\n", 1), 1);
+	}
+
+	i = check_maps(&maps_param);
+	printf("check_maps %d\n", i);
+	
+	printf("%d\t%d\n", maps_param->x, maps_param->y);
+	printf("==============================\n");
+	i = 0;
+	while (maps_param->maps[i] != NULL)
+	{
+		printf("strlen %zu\t",ft_strlen(maps_param->maps[i]));
+		printf("%d\t%s", i, (maps_param->maps[i]));
+		i++;
+	}
 }
