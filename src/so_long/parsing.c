@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
+/*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/01/31 15:39:10 by scely            ###   ########.fr       */
+/*   Updated: 2024/01/31 23:07:35 by meca_971         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,20 +104,12 @@ int	check_param(char *str)
 	return (0);
 }
 
-void init_struct_size(t_items *items)
-{
-	items->c = 0;
-	items->p = 0;
-	items->e = 0;
-}
-
 int	check_item(t_maps_size *maps)
 {
 	int i;
 	int j;
 
 	i = 0;
-
 	while (maps->maps[i])
 	{
 		j = 0;
@@ -133,7 +125,9 @@ int	check_item(t_maps_size *maps)
 		}
 		i++;
 	}
-	if (maps->maps_size.p != 1 || maps->maps_size.c < 1 || maps->maps_size.e != 1)
+	printf("check_item p = %d\t| c = %d\t| e = %d\n", maps->maps_size.p, maps->maps_size.c, maps->maps_size.e);
+	if (maps->maps_size.p != 1 || maps->maps_size.c < 1 
+		|| maps->maps_size.e != 1)
 		return (1);
 	return (0);
 }
@@ -142,19 +136,19 @@ int	check_maps(t_maps_size **maps)
 {
 	int	x;
 	int y;
-	t_items items;
 
 	y = 0;
-	init_struct_size(&items);
 	while ((*maps)->maps[y] != NULL)
 	{
-		if (check_param((*maps)->maps[y]) != 0 || check_item((*maps)) != 0)
+		if (check_param((*maps)->maps[y]) != 0)
 			return (ft_putstr_fd("mauvaise param\n", 1), 1);
 		if (len_line((*maps)->maps[0]) != len_line((*maps)->maps[y]) && y != 0)
 			return (ft_putstr_fd("mauvaise len\n", 1), 1);
 		printf("%s", (*maps)->maps[y]);
 		y++;
 	}
+	if (check_item((*maps)) != 0)
+		return (ft_putstr_fd("mauvaise item\n", 1),1); 
 	return (0);
 }
 

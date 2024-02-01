@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
+/*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 08:51:21 by scely             #+#    #+#             */
-/*   Updated: 2024/01/29 08:51:22 by scely            ###   ########.fr       */
+/*   Updated: 2024/01/31 22:56:13 by meca_971         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 # include <stdio.h>
 # include "libft.h"
 # include <fcntl.h>
-# include "../mlx/mlx.h"
+//# include "../mlx/mlx.h"
 
 #endif

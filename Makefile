@@ -39,12 +39,12 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS)
-		$(CC) $(OBJS) -o $(NAME) 
+		@$(CC) $(OBJS) -o $(NAME) 
 		@echo "$(COLOR_RED)$(COLOR_BOLD)Compilation fini  MAKEFILE INCOMPLET👍 $(COLOR_RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c include/libft.h include/so_long.h
 		@$(DIR_DUP)
-		$(CC) $(CFLAGS) $(CCFLAGS) -c -o $@ $<
+		@$(CC) $(CFLAGS) $(CCFLAGS) -c -o $@ $<
 
 clean:
 	@$(RM) $(OBJS)
