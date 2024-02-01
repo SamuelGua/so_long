@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:59:28 by scely             #+#    #+#             */
-/*   Updated: 2024/02/01 16:08:45 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/01 16:33:28 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ int	filling(t_maps **maps, int x, int y)
 int	flood_fill(t_maps **maps)
 {
 	int i = 0;
-
 	found_pos(maps);
 	filling(maps, (*maps)->pos_x, (*maps)->pos_y);
 	while (found_posV(maps) == 0)
 		filling(maps, (*maps)->pos_x, (*maps)->pos_y);
+	printf("=================>\n");
 	return (0);
 }

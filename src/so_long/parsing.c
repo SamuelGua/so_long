@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/02/01 12:09:30 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/01 16:36:00 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,35 @@ int len_line(char *av)
 	while (av[i] && av[i] != '\n')
 		i++;
 	return (i);
+}
+int check_wall(t_maps *maps)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (maps->maps[i][j] && maps->maps[i][j] == '1')
+		j++;
+	if (j == len_line(maps->maps[i]))
+		j = 0;
+	else
+		return (1);
+	while (maps->maps[maps->y - 1][j] && maps->maps[maps->y - 1][j] == '1')
+		j++;
+	if (j == len_line(maps->maps[i]))
+		j = 0;
+	else
+		return (1);
+	i++;
+	while (i < maps->y)
+	{	
+		if (maps->maps[i][j] != '1' 
+			|| maps->maps[i][len_line(maps->maps[i]) - 1] != '1')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 int	size_map(char **av, t_maps **maps)
@@ -152,8 +181,12 @@ int	main(int ac, char **av)
 		return (ft_putstr_fd("Error\n", 1), 1);
 	}
 	check_maps(&maps_param);
-	i = 0;
+	i = check_wall(maps_param);
+	if (i == 1)
+		return (ft_putstr_fd("wall wrong", 1), 1);
 	flood_fill(&maps_param);
+	printf("=================>%d\n", i);
+	i = 0;
 	while (maps_param->maps[i] != NULL)
 	{
 		printf("%d\t%s", i, (maps_param->maps[i]));
