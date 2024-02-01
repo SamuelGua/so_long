@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/01/31 23:07:35 by meca_971         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:09:30 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-typedef struct maps_items
-{
-	int p;
-	int c;
-	int e;
-}	t_items;
-
-typedef struct maps_size
-{
-	int		y; // abscisse | nombres de lignes
-	int		x; // ordonne | nombres de colonnes
-	char	**maps; // tout mon fichier
-	t_items maps_size;
-}	t_maps_size;
 
 int len_line(char *av)
 {
@@ -37,7 +22,7 @@ int len_line(char *av)
 	return (i);
 }
 
-int	size_map(char **av, t_maps_size **maps)
+int	size_map(char **av, t_maps **maps)
 {
 	int		fd;
 	char	*line;
@@ -61,7 +46,7 @@ int	size_map(char **av, t_maps_size **maps)
 	return (0);
 }
 
-int	fill_maps(char **av, t_maps_size **maps)
+int	fill_maps(char **av, t_maps **maps)
 {
 	int		fd;
 	char	*line;
@@ -104,7 +89,7 @@ int	check_param(char *str)
 	return (0);
 }
 
-int	check_item(t_maps_size *maps)
+int	check_item(t_maps *maps)
 {
 	int i;
 	int j;
@@ -116,23 +101,22 @@ int	check_item(t_maps_size *maps)
 		while (maps->maps[i][j])
 		{
 			if (maps->maps[i][j] == 'P')
-				maps->maps_size.p++;
+				maps->items.p++;
 			if (maps->maps[i][j] == 'C')
-				maps->maps_size.c++;
+				maps->items.c++;
 			if (maps->maps[i][j] == 'E')
-				maps->maps_size.e++;
+				maps->items.e++;
 			j++;
 		}
 		i++;
 	}
-	printf("check_item p = %d\t| c = %d\t| e = %d\n", maps->maps_size.p, maps->maps_size.c, maps->maps_size.e);
-	if (maps->maps_size.p != 1 || maps->maps_size.c < 1 
-		|| maps->maps_size.e != 1)
+	if (maps->items.p != 1 || maps->items.c < 1 
+		|| maps->items.e != 1)
 		return (1);
 	return (0);
 }
 
-int	check_maps(t_maps_size **maps)
+int	check_maps(t_maps **maps)
 {
 	int	x;
 	int y;
@@ -144,7 +128,6 @@ int	check_maps(t_maps_size **maps)
 			return (ft_putstr_fd("mauvaise param\n", 1), 1);
 		if (len_line((*maps)->maps[0]) != len_line((*maps)->maps[y]) && y != 0)
 			return (ft_putstr_fd("mauvaise len\n", 1), 1);
-		printf("%s", (*maps)->maps[y]);
 		y++;
 	}
 	if (check_item((*maps)) != 0)
@@ -154,12 +137,12 @@ int	check_maps(t_maps_size **maps)
 
 int	main(int ac, char **av)
 {
-	t_maps_size	*maps_param;
+	t_maps	*maps_param;
 	int			i;
 	if (av[1] == NULL)
 		return (1);
 	i = 0;
-	maps_param = ft_calloc(sizeof(t_maps_size), 1);
+	maps_param = ft_calloc(sizeof(t_maps), 1);
 	size_map(av, &maps_param);	
 
 	if(fill_maps(av, &maps_param) != 0)
@@ -168,16 +151,11 @@ int	main(int ac, char **av)
 			ft_free((*maps_param).maps);
 		return (ft_putstr_fd("Error\n", 1), 1);
 	}
-
-	i = check_maps(&maps_param);
-	printf("check_maps %d\n", i);
-	
-	printf("%d\t%d\n", maps_param->x, maps_param->y);
-	printf("==============================\n");
+	check_maps(&maps_param);
 	i = 0;
+	flood_fill(&maps_param);
 	while (maps_param->maps[i] != NULL)
 	{
-		printf("strlen %zu\t",ft_strlen(maps_param->maps[i]));
 		printf("%d\t%s", i, (maps_param->maps[i]));
 		i++;
 	}
