@@ -6,13 +6,13 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:59:28 by scely             #+#    #+#             */
-/*   Updated: 2024/02/01 16:33:28 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/02 10:17:32 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int found_posV(t_maps **maps)
+int	found_posv(t_maps **maps)
 {
 	(*maps)->pos_x = 0;
 	(*maps)->pos_y = 0;
@@ -23,11 +23,11 @@ int found_posV(t_maps **maps)
 		{
 			if ((*maps)->maps[(*maps)->pos_x][(*maps)->pos_y] == 'V')
 			{
-				if ((*maps)->maps[(*maps)->pos_x + 1][(*maps)->pos_y] == '0' 
+				if ((*maps)->maps[(*maps)->pos_x + 1][(*maps)->pos_y] == '0'
 					|| (*maps)->maps[(*maps)->pos_x - 1][(*maps)->pos_y] == '0'
 					|| (*maps)->maps[(*maps)->pos_x][(*maps)->pos_y + 1] == '0'
 					|| (*maps)->maps[(*maps)->pos_x][(*maps)->pos_y - 1] == '0')
-						return(0);
+					return (0);
 			}
 			(*maps)->pos_y++;
 		}
@@ -48,34 +48,38 @@ int	found_pos(t_maps **maps)
 			(*maps)->pos_y++;
 		}
 		(*maps)->pos_x++;
-	}		
+	}
 	return (1);
 }
+
 int	filling(t_maps **maps, int x, int y)
 {
 	(*maps)->maps[(*maps)->pos_x][(*maps)->pos_y] = 'V';
-
 	if ((*maps)->maps[(*maps)->pos_x][(*maps)->pos_y] == '1')
 		return (0);
-	if ((*maps)->maps[(*maps)->pos_x][(*maps)->pos_y + 1] != '1' && (*maps)->maps[(*maps)->pos_x][(*maps)->pos_y + 1] != 'V')
+	if ((*maps)->maps[(*maps)->pos_x][(*maps)->pos_y + 1] != '1'
+		&& (*maps)->maps[(*maps)->pos_x][(*maps)->pos_y + 1] != 'V')
 		filling(maps, (*maps)->pos_x, (*maps)->pos_y++);
-	if ((*maps)->maps[(*maps)->pos_x + 1][(*maps)->pos_y] != '1' && (*maps)->maps[(*maps)->pos_x + 1][(*maps)->pos_y] != 'V')	
-		filling(maps, (*maps)->pos_x++, (*maps)->pos_y);	
-	if ((*maps)->maps[(*maps)->pos_x - 1][(*maps)->pos_y] != '1' && (*maps)->maps[(*maps)->pos_x - 1][(*maps)->pos_y] != 'V')
+	if ((*maps)->maps[(*maps)->pos_x + 1][(*maps)->pos_y] != '1'
+		&& (*maps)->maps[(*maps)->pos_x + 1][(*maps)->pos_y] != 'V')
+		filling(maps, (*maps)->pos_x++, (*maps)->pos_y);
+	if ((*maps)->maps[(*maps)->pos_x - 1][(*maps)->pos_y] != '1'
+		&& (*maps)->maps[(*maps)->pos_x - 1][(*maps)->pos_y] != 'V')
 		filling(maps, (*maps)->pos_x--, (*maps)->pos_y);
-	if ((*maps)->maps[(*maps)->pos_x][(*maps)->pos_y - 1] != '1' && (*maps)->maps[(*maps)->pos_x][(*maps)->pos_y - 1] != 'V')
+	if ((*maps)->maps[(*maps)->pos_x][(*maps)->pos_y - 1] != '1'
+		&& (*maps)->maps[(*maps)->pos_x][(*maps)->pos_y - 1] != 'V')
 		filling(maps, (*maps)->pos_x, (*maps)->pos_y--);
-
 	return (0);
 }
 
 int	flood_fill(t_maps **maps)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	found_pos(maps);
 	filling(maps, (*maps)->pos_x, (*maps)->pos_y);
-	while (found_posV(maps) == 0)
+	while (found_posv(maps) == 0)
 		filling(maps, (*maps)->pos_x, (*maps)->pos_y);
-	printf("=================>\n");
 	return (0);
 }
