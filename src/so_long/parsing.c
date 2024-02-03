@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
+/*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/02/02 14:04:41 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/03 21:59:32 by meca_971         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,16 @@ int	check_wall(t_maps *maps)
 {
 	int	i;
 	int	j;
+	int	k;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	while (maps->maps[i][j] && maps->maps[i][j] == '1')
 		j++;
-	if (j == len_line(maps->maps[i]))
-		j = 0;
-	else
-		return (1);
-	while (maps->maps[maps->y - 1][j] && maps->maps[maps->y - 1][j] == '1')
-		j++;
-	if (j == len_line(maps->maps[i]))
+	while (maps->maps[maps->y - 1][k] && maps->maps[maps->y - 1][k] == '1')
+		k++;
+	if (j == len_line(maps->maps[i]) || j == len_line(maps->maps[k]))
 		j = 0;
 	else
 		return (1);
@@ -152,13 +150,13 @@ int	check_maps(t_maps **maps)
 	while ((*maps)->maps[y] != NULL)
 	{
 		if (check_param((*maps)->maps[y]) != 0)
-			return (ft_putstr_fd("mauvaise param\n", 1), 1);
+			return (1);
 		if (len_line((*maps)->maps[0]) != len_line((*maps)->maps[y]) && y != 0)
-			return (ft_putstr_fd("mauvaise len\n", 1), 1);
+			return (1);
 		y++;
 	}
 	if (check_item((*maps)) != 0)
-		return (ft_putstr_fd("mauvaise item\n", 1), 1);
+		return (1);
 	return (0);
 }
 
@@ -188,6 +186,14 @@ int	check_final(t_maps **maps)
 	return (0);
 }
 
+void ft_error(t_maps *maps)
+{
+	if ((*maps).maps != NULL)
+			ft_free((*maps).maps);
+	free(maps);
+	ft_putstr_fd("Error\n", 2);
+}
+
 int	main(int ac, char **av)
 {
 	t_maps	*maps_param;
@@ -198,19 +204,22 @@ int	main(int ac, char **av)
 	i = 0;
 	maps_param = ft_calloc(sizeof(t_maps), 1);
 	if (maps_param == NULL)
-		return (ft_putstr_fd("Error\n"), 2);
+		return (ft_putstr_fd("Error malloc\n", 2), 1);
 	size_map(av, &maps_param);
 	if (fill_maps(av, &maps_param) != 0)
+		return (ft_error(maps_param), 1);
+	if (check_maps(&maps_param) !=  0 ||  check_wall(maps_param) !=  0)
+		return (ft_error(maps_param), 1);
+	if (flood_fill(&maps_param) != 0 || check_ways(maps_param) != 0)
+		return (ft_error(maps_param), 1);
+	i = 0;
+	while (maps_param->maps[i] != NULL)
 	{
-		if ((*maps_param).maps != NULL)
-			ft_free((*maps_param).maps);
-		return (ft_putstr_fd("Error\n", 1), 1);
+		printf("%d\t%s", i, (maps_param->maps[i]));
+		i++;
 	}
-	check_maps(&maps_param);
-	i = check_wall(maps_param);
-	if (i == 1)
-		return (ft_putstr_fd("wall wrong", 1), 1);
-	flood_fill(&maps_param);
+	fill_maps(av, &maps_param);
+	printf("\n\n");
 	i = 0;
 	while (maps_param->maps[i] != NULL)
 	{

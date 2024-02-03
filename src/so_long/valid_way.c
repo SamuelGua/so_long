@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_way.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
+/*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:59:28 by scely             #+#    #+#             */
-/*   Updated: 2024/02/02 10:17:32 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/03 21:58:23 by meca_971         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,27 @@ int	flood_fill(t_maps **maps)
 	filling(maps, (*maps)->pos_x, (*maps)->pos_y);
 	while (found_posv(maps) == 0)
 		filling(maps, (*maps)->pos_x, (*maps)->pos_y);
+	return (0);
+}
+
+int check_ways(t_maps *maps)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	char  test;
+	while (maps->maps[i])
+	{
+		j = 0;
+		while (maps->maps[i][j] && maps->maps[i][j] != '\n')
+		{
+			test  = maps->maps[i][j];
+			if (maps->maps[i][j] == 'E' || maps->maps[i][j] == 'C')
+				return (1);
+			j++;
+		}
+		i++;
+	}
 	return (0);
 }
