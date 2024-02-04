@@ -6,7 +6,7 @@
 /*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/02/03 22:58:09 by meca_971         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:38:14 by meca_971         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_wall(t_maps *maps)
 		j++;
 	while (maps->maps[maps->y - 1][k] && maps->maps[maps->y - 1][k] == '1')
 		k++;
-	if (j == len_line(maps->maps[i]) || j == len_line(maps->maps[k]))
+	if (j == len_line(maps->maps[i]) || k == len_line(maps->maps[i]))
 		j = 0;
 	else
 		return (1);
@@ -118,7 +118,7 @@ int	parsing(t_maps *maps_param, char **av)
 	size_map(av, maps_param);
 	if (fill_maps(av, maps_param) != 0)
 		return (ft_error(maps_param), 1);
-	if (check_maps(maps_param) !=  0 ||  check_wall(maps_param) !=  0)
+	if (check_wall(maps_param) !=  0 ||  check_maps(maps_param) !=  0)
 		return (ft_error(maps_param), 1);
 	if (flood_fill(maps_param) != 0 || check_ways(maps_param) != 0)
 		return (ft_error(maps_param), 1);
