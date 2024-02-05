@@ -29,7 +29,7 @@ so_long				= so_long.c \
 PARSING_PATH 		= $(parsing:%=src/parsing/%)
 parsing				= parsing.c parsing_utils.c valid_way.c\
 
-		
+MLXFLAGS = -I/usr/include -Imlx_linux -O3 -lXext -lX11 -lm
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 CC	= cc
 CFLAGS			:= -Wall -Wextra -Werror
@@ -43,21 +43,24 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS)
-		@$(CC) $(OBJS) -o $(NAME) 
+		make -C mlx/	
+		@$(CC) $(OBJS) mlx/libmlx_Linux.a -L mlx -lXext -lX11 -lm  -o $(NAME) 
 		@echo "$(COLOR_RED)$(COLOR_BOLD)Compilation fini  MAKEFILE INCOMPLET👍 $(COLOR_RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c include/libft.h include/so_long.h
 		@$(DIR_DUP)
-		@$(CC) $(CFLAGS) $(CCFLAGS) -c -o $@ $<
+		@$(CC) $(CFLAGS) $(CCFLAGS) -c $< -o $@ 
 
 clean:
 	@$(RM) $(OBJS)
 
 fclean: clean
+	@$(MAKE) -C mlx/ clean
 	@$(RM) $(OBJ_DIR) $(NAME)
 	
 
 re:
+	@$(MAKE) -C mlx/ clean
 	@$(MAKE) fclean
 	@$(MAKE) all
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/02/04 13:38:14 by meca_971         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:28:03 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,17 +111,16 @@ int	check_final(t_maps *maps)
 
 int	parsing(t_maps *maps_param, char **av)
 {
-
-	maps_param = ft_calloc(sizeof(t_maps), 1);
 	if (maps_param == NULL)
 		return (ft_putstr_fd("Error malloc\n", 2), 1);
 	size_map(av, maps_param);
 	if (fill_maps(av, maps_param) != 0)
 		return (ft_error(maps_param), 1);
-	if (check_wall(maps_param) !=  0 ||  check_maps(maps_param) !=  0)
+	if (check_wall(maps_param) != 0 || check_maps(maps_param) != 0)
 		return (ft_error(maps_param), 1);
 	if (flood_fill(maps_param) != 0 || check_ways(maps_param) != 0)
 		return (ft_error(maps_param), 1);
+	ft_free(maps_param->maps);
 	fill_maps(av, maps_param);
 	return (0);
 }

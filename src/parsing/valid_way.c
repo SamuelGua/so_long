@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid_way.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meca_971 <meca_971@student.42.fr>          +#+  +:+       +#+        */
+/*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:59:28 by scely             #+#    #+#             */
-/*   Updated: 2024/02/03 23:02:54 by meca_971         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:26:41 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	flood_fill(t_maps *maps)
 	return (0);
 }
 
-int check_ways(t_maps *maps)
+int	check_ways(t_maps *maps)
 {
 	int	i;
 	int	j;
