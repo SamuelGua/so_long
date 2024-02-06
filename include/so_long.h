@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 08:51:21 by scely             #+#    #+#             */
-/*   Updated: 2024/02/05 10:29:37 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/05 15:09:21 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,11 @@ int		found_pos(t_maps *maps);
 int		filling(t_maps *maps, int x, int y);
 int		flood_fill(t_maps *maps);
 int		check_ways(t_maps *maps);
+
+//free
+void free_maps(t_data *data);
+void free_int(t_data *data);
+void free_img(t_data *data);
+int	close_window(t_data *data);
 
 #endif

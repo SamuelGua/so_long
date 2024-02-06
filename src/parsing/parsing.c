@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/02/04 20:28:03 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/06 08:08:35 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_wall(t_maps *maps)
 		j++;
 	while (maps->maps[maps->y - 1][k] && maps->maps[maps->y - 1][k] == '1')
 		k++;
-	if (j == len_line(maps->maps[i]) || k == len_line(maps->maps[i]))
+	if (j == len_line(maps->maps[i]) && k == len_line(maps->maps[i]))
 		j = 0;
 	else
 		return (1);

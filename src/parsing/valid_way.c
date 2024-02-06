@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 16:59:28 by scely             #+#    #+#             */
-/*   Updated: 2024/02/04 20:26:41 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/06 14:18:09 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	found_posv(t_maps *maps)
 
 int	found_pos(t_maps *maps)
 {
+	maps->pos_x = 0;
+	maps->pos_y = 0;
 	while (maps->maps[maps->pos_x])
 	{
 		maps->pos_y = 0;

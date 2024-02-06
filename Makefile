@@ -24,7 +24,7 @@ libft			= ft_isdigit.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c\
 				ft_lstlast_bonus.c ft_lstnew_bonus.c ft_free.c get_next_line.c\
 
 SO_LONG_PATH		= $(so_long:%=src/so_long/%)
-so_long				= so_long.c \
+so_long				= so_long.c free_close.c\
 
 PARSING_PATH 		= $(parsing:%=src/parsing/%)
 parsing				= parsing.c parsing_utils.c valid_way.c\
