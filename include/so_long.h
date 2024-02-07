@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 08:51:21 by scely             #+#    #+#             */
-/*   Updated: 2024/02/05 15:09:21 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/07 16:10:44 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "libft.h"
 # include <fcntl.h>
 # include "../mlx/mlx.h"
+# include "ft_printf.h"
 
 typedef struct maps_items
 {
@@ -56,6 +57,8 @@ typedef struct data_store
 	t_maps	*maps;
 	t_img	*image;
 	t_win	*win;
+	int		mouv;
+	int		coins;
 }	t_data;
 
 
@@ -85,5 +88,6 @@ void free_maps(t_data *data);
 void free_int(t_data *data);
 void free_img(t_data *data);
 int	close_window(t_data *data);
+void	env_error(t_data *data);
 
 #endif

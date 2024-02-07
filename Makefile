@@ -10,9 +10,9 @@ NAME			:= so_long
 
 SRC_DIR			:= src
 OBJ_DIR			:= obj
-SRCS			= $(PATH_LIBFT) $(SO_LONG_PATH) $(PARSING_PATH)
-PATH_LIBFT		= $(libft:%=src/libft/%)
-libft			= ft_isdigit.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c\
+SRCS			= $(PATH_LIBFT) $(SO_LONG_PATH) $(PARSING_PATH) $(PRINTF_PATH)
+PATH_LIBFT		= $(LIBFT:%=src/libft/%)
+LIBFT			= ft_isdigit.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c\
 				ft_isprint.c ft_putendl_fd.c ft_strlcat.c ft_substr.c ft_atoi.c\
 				ft_itoa.c ft_putnbr_fd.c ft_strlcpy.c ft_tolower.c ft_bzero.c\
 				ft_memchr.c ft_putstr_fd.c ft_strlen.c ft_toupper.c ft_atol.c\
@@ -23,11 +23,14 @@ libft			= ft_isdigit.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c\
 				ft_lstmap_bonus.c ft_lstsize_bonus.c ft_lstadd_front_bonus.c ft_lstdelone_bonus.c\
 				ft_lstlast_bonus.c ft_lstnew_bonus.c ft_free.c get_next_line.c\
 
-SO_LONG_PATH		= $(so_long:%=src/so_long/%)
-so_long				= so_long.c free_close.c\
+SO_LONG_PATH		= $(SO_LONG:%=src/so_long/%)
+SO_LONG				= so_long.c free_close.c\
 
-PARSING_PATH 		= $(parsing:%=src/parsing/%)
-parsing				= parsing.c parsing_utils.c valid_way.c\
+PRINTF_PATH			= $(PRINTF:%=src/ft_printf/%)
+PRINTF				= ft_printf.c ft_print_hex.c ft_print_letters.c ft_print_nbr.c ft_print_ptr.c\
+
+PARSING_PATH 		= $(PARSING:%=src/parsing/%)
+PARSING				= parsing.c parsing_utils.c valid_way.c\
 
 MLXFLAGS = -I/usr/include -Imlx_linux -O3 -lXext -lX11 -lm
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -45,7 +48,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 		make -C mlx/	
 		@$(CC) $(OBJS) mlx/libmlx_Linux.a -L mlx -lXext -lX11 -lm  -o $(NAME) 
-		@echo "$(COLOR_RED)$(COLOR_BOLD)Compilation fini  MAKEFILE INCOMPLET👍 $(COLOR_RESET)"
+		@echo "$(COLOR_GREEN)$(COLOR_BOLD)Compilation fini 👍$(COLOR_RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c include/libft.h include/so_long.h
 		@$(DIR_DUP)
