@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 22:41:23 by meca_971          #+#    #+#             */
-/*   Updated: 2024/02/06 19:24:03 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/07 12:19:20 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,24 +64,6 @@ int	init_img(t_data *data)
 		exit(1);
 	}
 	put_img(data);
-	// while (data->maps->maps[i])
-	// {
-	// 	j = 0;
-	// 	while (data->maps->maps[i][j])
-	// 	{
-	// 		(y = i, x = j);
-	// 		if (data->maps->maps[i][j] == '0' && data->maps->maps[i][j] != '\n')
-	// 			mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->floor, x * 50, y * 50);
-	// 		else if (data->maps->maps[i][j] == '1' && data->maps->maps[i][j] != '\n')
-	// 			mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->wall, x * 50, y * 50);
-	// 		else if (data->maps->maps[i][j] == 'C' && data->maps->maps[i][j] != '\n')
-	// 			mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->collectible, x * 50, y * 50);
-	// 		if (data->maps->maps[i][j] == 'P' && data->maps->maps[i][j] != '\n')
-	// 			mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->character, x * 50, y * 50);
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
 	return (0);
 
 }
