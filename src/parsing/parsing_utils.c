@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 22:09:02 by meca_971          #+#    #+#             */
-/*   Updated: 2024/02/04 20:27:19 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/08 18:00:04 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_error(t_maps *maps)
 	if (maps->maps != NULL)
 		ft_free(maps->maps);
 	free(maps);
-	ft_putstr_fd("Error\n", 2);
+	ft_putstr_fd("Error : invalid maps\n", 2);
 }
 
 int	len_line(char *av)
@@ -36,6 +36,8 @@ int	size_map(char **av, t_maps *maps)
 	char	*line;
 
 	fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+		return (1);
 	line = get_next_line(fd);
 	if (line == NULL)
 		return (1);
@@ -76,13 +78,16 @@ int	fill_maps(char **av, t_maps *maps)
 
 	i = 0;
 	fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+		return (1);
 	maps->maps = ft_calloc(sizeof(char *), (maps->y + 2));
 	if (maps->maps == NULL)
 		return (1);
-	maps->maps[maps->y] = NULL;
 	while (!maps->maps[i] && i < maps->y + 1)
 	{
 		maps->maps[i] = get_next_line(fd);
+		if (i == 0 && maps->maps[i] == NULL)
+			return (1);
 		i++;
 	}
 	i = 0;
@@ -92,6 +97,5 @@ int	fill_maps(char **av, t_maps *maps)
 			return (close(fd), 1);
 		i++;
 	}
-	close(fd);
-	return (0);
+	return (close(fd), 0);
 }

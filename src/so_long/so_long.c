@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 22:41:23 by meca_971          #+#    #+#             */
-/*   Updated: 2024/02/07 18:43:36 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/08 20:19:20 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@ void	put_img(t_data *data)
 {
 	int	i;
 	int	j;
-	int	x;
 
-	i = 0;
-	mlx_clear_window(data->win->mlx_ptr, data->win->win_ptr);
-	while (data->maps->maps[i])
+	(mlx_clear_window(data->win->mlx_ptr, data->win->win_ptr), i = -1);
+	while (data->maps->maps[++i])
 	{
-		j = 0;
-		while (data->maps->maps[i][j])
+		j = -1;
+		while (data->maps->maps[i][++j])
 		{
-			(x = j);
 			if (data->maps->maps[i][j] == '0')
-				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->floor, x * 50, i * 50);
+				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr,
+					data->image->floor, j * 50, i * 50);
 			else if (data->maps->maps[i][j] == '1')
-				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->wall, x * 50, i * 50);
+				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr,
+					data->image->wall, j * 50, i * 50);
 			else if (data->maps->maps[i][j] == 'C')
-				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->collectible, x * 50, i * 50);
+				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr,
+					data->image->collectible, j * 50, i * 50);
 			else if (data->maps->maps[i][j] == 'P')
-				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->character, x * 50, i * 50);
+				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr,
+					data->image->character, j * 50, i * 50);
 			else if (data->maps->maps[i][j] == 'E')
-				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr, data->image->exit, x * 50, i * 50);
-			j++;
+				mlx_put_image_to_window(data->win->mlx_ptr, data->win->win_ptr,
+					data->image->exit, j * 50, i * 50);
 		}
-		i++;
 	}
 }
 
@@ -58,28 +58,34 @@ int	init_img(t_data *data)
 	if (data->image->character == NULL || data->image->collectible == NULL
 		|| data->image->wall == NULL || data->image->wall == NULL)
 	{
-		ft_putstr_fd("MERCI FILS\n", 1);
 		free_img(data);
+		free_maps(data);
+		mlx_destroy_display(data->win->mlx_ptr);
+		free(data->win->mlx_ptr);
+		free(data->win);
+		free(data);
 		exit(1);
 	}
-	put_img(data);
 	return (0);
 }
 
+// printf("x = %d | %d\ty = %d | %d\n", x, (x / 50), y, (y /50));
+// printf("x = %d | %d\ty = %d | %d\n", ((data->maps->x) * 50), (data->maps->x),
+// ((data->maps->y) * 50), (data->maps->y));
 int	check_screen(t_data *data)
 {
 	int	x;
 	int	y;
 
-	mlx_get_screen_size(data->win->mlx_ptr, &y, &x);
-	if (x < (data->maps->pos_x - 1) * 50 || y < (data->maps->pos_y) * 50)
+	mlx_get_screen_size(data->win->mlx_ptr, &x, &y);
+	if (x < ((data->maps->x) * 50) || (y - 50) < ((data->maps->y) * 50))
 	{
 		mlx_destroy_display(data->win->mlx_ptr);
 		free_maps(data);
 		free(data->win->mlx_ptr);
 		free(data->win);
 		free(data);
-		ft_putstr_fd("Error\n", 2);
+		ft_putstr_fd("Error windows\n", 2);
 		exit(1);
 	}
 	return (0);
@@ -87,13 +93,17 @@ int	check_screen(t_data *data)
 
 void	score(t_data *data, int keycode)
 {
-	if ((keycode == 'a' || keycode == 65361) && data->maps->maps[data->maps->pos_x][data->maps->pos_y - 1] == 'C')
+	if ((keycode == 'a' || keycode == 65361)
+		&& data->maps->maps[data->maps->pos_x][data->maps->pos_y - 1] == 'C')
 		data->coins++;
-	else if ((keycode == 'd' || keycode == 65363) && data->maps->maps[data->maps->pos_x][data->maps->pos_y + 1] == 'C')
+	else if ((keycode == 'd' || keycode == 65363)
+		&& data->maps->maps[data->maps->pos_x][data->maps->pos_y + 1] == 'C')
 		data->coins++;
-	else if ((keycode == 'w' || keycode == 65362) && data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] == 'C')
+	else if ((keycode == 'w' || keycode == 65362)
+		&& data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] == 'C')
 		data->coins++;
-	else if ((keycode == 's' || keycode == 65364) && data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] == 'C')
+	else if ((keycode == 's' || keycode == 65364)
+		&& data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] == 'C')
 		data->coins++;
 	data->mouv++;
 	ft_printf("\r\rScore = %d Coins = %d", data->mouv, data->coins);
@@ -101,30 +111,40 @@ void	score(t_data *data, int keycode)
 
 void	game_exit(t_data *data, int keycode)
 {
-	if ((keycode == 'a' || keycode == 65361) && data->maps->maps[data->maps->pos_x][data->maps->pos_y - 1] == 'E')
+	if ((keycode == 'a' || keycode == 65361)
+		&& data->maps->maps[data->maps->pos_x][data->maps->pos_y - 1] == 'E')
 	{
 		data->maps->maps[data->maps->pos_x][data->maps->pos_y] = '0';
 		data->maps->maps[data->maps->pos_x][data->maps->pos_y - 1] = 'P';
-		close_window(data);
+		if (data->maps->items.c == data->coins)
+			close_window(data);
 	}
-	else if ((keycode == 'd' || keycode == 65363) && data->maps->maps[data->maps->pos_x][data->maps->pos_y + 1] == 'E')
+	else if ((keycode == 'd' || keycode == 65363)
+		&& data->maps->maps[data->maps->pos_x][data->maps->pos_y + 1] == 'E')
 	{
 		data->maps->maps[data->maps->pos_x][data->maps->pos_y] = '0';
 		data->maps->maps[data->maps->pos_x][data->maps->pos_y + 1] = 'P';
-		close_window(data);
+		if (data->maps->items.c == data->coins)
+			close_window(data);
 	}
-	else if ((keycode == 'w' || keycode == 65362) && data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] == 'E')
+	else if ((keycode == 'w' || keycode == 65362)
+		&& data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] == 'E')
 	{
 		data->maps->maps[data->maps->pos_x][data->maps->pos_y] = '0';
 		data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] = 'P';
-		close_window(data);
+		if (data->maps->items.c == data->coins)
+			close_window(data);
+
 	}
-	else if ((keycode == 's' || keycode == 65364) && data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] == 'E')
+	else if ((keycode == 's' || keycode == 65364)
+		&& data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] == 'E')
 	{
 		data->maps->maps[data->maps->pos_x][data->maps->pos_y] = '0';
 		data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] = 'P';
-		close_window(data);
+		if (data->maps->items.c == data->coins)
+			close_window(data);
 	}
+
 }
 
 void	made_mouv(t_data *data, int keycode, int x, int y)
@@ -139,11 +159,13 @@ void	made_mouv(t_data *data, int keycode, int x, int y)
 		data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] = 'P';
 	if (x != 0 && x == +1)
 		data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] = 'P';
+	if (data->maps->maps[data->maps->exit_x][data->maps->exit_y] == '0')
+		data->maps->maps[data->maps->exit_x][data->maps->exit_y] = 'E';
 }
 
 int	key_capt(int keycode, t_data *data)
 {
-	found_pos(data->maps); 
+	found_pos(data->maps, 'P'); 
 	if (keycode == 65307)
 		close_window(data);
 	game_exit(data, keycode);
@@ -179,21 +201,37 @@ void	fenetre(t_data *data)
 		exit(1);
 	}
 	check_screen(data);
-	data->win->win_ptr = mlx_new_window(data->win->mlx_ptr, (data->maps->x - 1) * 50, data->maps->y * 50, "so_long !");
-	found_pos(data->maps);
 	init_img(data);
+	data->win->win_ptr = mlx_new_window(data->win->mlx_ptr, (data->maps->x - 1) * 50, data->maps->y * 50, "so_long !");
+	put_img(data);
+	found_pos(data->maps, 'P');
 	mlx_hook(data->win->win_ptr, 2, 1L << 0, key_capt, data);
 	mlx_hook(data->win->win_ptr, 17, 1L << 17, close_window, data);
 	mlx_loop(data->win->mlx_ptr);
 }
+int	check_extension(char **av)
+{
+	int	i;
+	int x;
 
-int	main(int ac, char **av, char **envp)
+	i = ft_strlen(av[1]);
+	x = 0;
+	while (x <= i - 4)
+		x++;
+	if (ft_strnstr(&av[1][x],".ber", 5) == NULL)
+		return (0);
+	return (1); 
+
+}
+
+int	main(int ac, char **av)
 {
 	t_data	*data;
 
-	(void)envp;
 	if (ac != 2)
-		return (1);
+		return (ft_putstr_fd("Error\n", 1), 1);
+	if (check_extension(av) != 0)
+		return (ft_putstr_fd("Error : wrong file extension\n", 2), 1);
 	data = malloc(sizeof(t_data));
 	if (data == NULL)
 		return (1);

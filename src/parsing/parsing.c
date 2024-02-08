@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 09:36:59 by scely             #+#    #+#             */
-/*   Updated: 2024/02/06 08:08:35 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/08 17:31:19 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@ int	parsing(t_maps *maps_param, char **av)
 		return (ft_error(maps_param), 1);
 	ft_free(maps_param->maps);
 	fill_maps(av, maps_param);
+	found_pos(maps_param, 'E');
 	return (0);
 }

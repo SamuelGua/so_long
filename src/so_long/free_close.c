@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 15:06:38 by scely             #+#    #+#             */
-/*   Updated: 2024/02/07 18:38:47 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/08 17:46:22 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,31 @@ void	free_int(t_data *data)
 
 void	free_img(t_data *data)
 {	
-	mlx_destroy_image(data->win->mlx_ptr, data->image->character);
-	mlx_destroy_image(data->win->mlx_ptr, data->image->collectible);
-	mlx_destroy_image(data->win->mlx_ptr, data->image->floor);
-	mlx_destroy_image(data->win->mlx_ptr, data->image->wall);
-	mlx_destroy_image(data->win->mlx_ptr, data->image->exit);
+	if (data->image->character)
+		mlx_destroy_image(data->win->mlx_ptr, data->image->character);
+	if (data->image->collectible)
+		mlx_destroy_image(data->win->mlx_ptr, data->image->collectible);
+	if (data->image->floor)
+		mlx_destroy_image(data->win->mlx_ptr, data->image->floor);
+	if (data->image->wall)
+		mlx_destroy_image(data->win->mlx_ptr, data->image->wall);
+	if (data->image->exit)
+		mlx_destroy_image(data->win->mlx_ptr, data->image->exit);
 	free(data->image);
 }
 
 int	close_window(t_data *data)
 {
-	ft_printf("\b\b\b\b\b\b\b\b\b\b\b\b\b");
-	ft_printf("\b\b\b\b\b\b\b\b\b\b\b\b\b");
-	ft_printf("\b\b\b\b\b\b\b\b\b\b\b\b\b");
+	int	i;
+
+	i = 0;
+	while (i++ < 4)
+		ft_printf("\b\b\b\b\b\b\b\b\b\b\b\b\b");
 	ft_printf("Your final score is %d 🤑 ", data->mouv);
-	ft_printf("You have collected %d coins 💰\n", data->coins);
+	if (data->coins == data->maps->items.c)
+		ft_printf("You have collected %d coins 💰\n", data->coins);
+	else
+		ft_printf("Fail only %d coins 💰\n", data->coins);
 	free_img(data);
 	free_maps(data);
 	free_int(data);

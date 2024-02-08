@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 08:51:21 by scely             #+#    #+#             */
-/*   Updated: 2024/02/07 16:10:44 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/08 17:45:29 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ typedef struct maps_size
 	int		x;
 	int		pos_y;
 	int		pos_x;
+	int		exit_x;
+	int		exit_y;
 	char	**maps;
 	t_items	items;
 }	t_maps;
 
-typedef	struct img_maps
+typedef struct img_maps
 {
 	void	*wall;
 	void	*floor;
@@ -61,7 +63,6 @@ typedef struct data_store
 	int		coins;
 }	t_data;
 
-
 //parsing utils
 void	ft_error(t_maps *maps);
 int		len_line(char *av);
@@ -78,16 +79,16 @@ int		parsing(t_maps *maps_param, char **av);
 
 //valid_ways
 int		found_posv(t_maps *maps);
-int		found_pos(t_maps *maps);
+int		found_pos(t_maps *maps, char c);
 int		filling(t_maps *maps, int x, int y);
 int		flood_fill(t_maps *maps);
 int		check_ways(t_maps *maps);
 
 //free
-void free_maps(t_data *data);
-void free_int(t_data *data);
-void free_img(t_data *data);
-int	close_window(t_data *data);
+void	free_maps(t_data *data);
+void	free_int(t_data *data);
+void	free_img(t_data *data);
+int		close_window(t_data *data);
 void	env_error(t_data *data);
 
 #endif
