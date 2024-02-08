@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 08:49:47 by scely             #+#    #+#             */
-/*   Updated: 2023/12/21 13:36:48 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/08 20:30:37 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ft_free(char *buffer, char *buf)
+static char	*ft_free2(char *buffer, char *buf)
 {
 	char	*temp;
 
@@ -39,7 +39,7 @@ static void	read_line(int fd, char **temp, int *lues)
 			return ;
 		}
 		buffer[*lues] = '\0';
-		*temp = ft_free(*temp, buffer);
+		*temp = ft_free2(*temp, buffer);
 		free(buffer);
 	}
 }

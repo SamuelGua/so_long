@@ -24,13 +24,14 @@ LIBFT			= ft_isdigit.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c\
 				ft_lstlast_bonus.c ft_lstnew_bonus.c ft_free.c get_next_line.c\
 
 SO_LONG_PATH		= $(SO_LONG:%=src/so_long/%)
-SO_LONG				= so_long.c free_close.c\
+SO_LONG				= so_long.c free_close.c so_long_utils.c so_long_utils2.c\
 
 PRINTF_PATH			= $(PRINTF:%=src/ft_printf/%)
 PRINTF				= ft_printf.c ft_print_hex.c ft_print_letters.c ft_print_nbr.c ft_print_ptr.c\
 
 PARSING_PATH 		= $(PARSING:%=src/parsing/%)
 PARSING				= parsing.c parsing_utils.c valid_way.c\
+						found.c\
 
 MLXFLAGS = -I/usr/include -Imlx_linux -O3 -lXext -lX11 -lm
 OBJS			:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

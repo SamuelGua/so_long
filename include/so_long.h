@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 08:51:21 by scely             #+#    #+#             */
-/*   Updated: 2024/02/08 17:45:29 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/08 20:53:09 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,22 @@ void	free_int(t_data *data);
 void	free_img(t_data *data);
 int		close_window(t_data *data);
 void	env_error(t_data *data);
+
+//found
+int	ft_found2(t_maps *maps, char c);
+int	found_posv(t_maps *maps);
+int	found_pos(t_maps *maps, char c);
+
+//so_long utils
+void	put_img2(t_data *data, int i, int j);
+void	put_img(t_data *data);
+int		init_img(t_data *data);
+int		check_screen(t_data *data);
+
+//so_long utils_2
+void	score(t_data *data, int keycode);
+void	game_exit1(t_data *data, int keycode);
+void	game_exit(t_data *data, int keycode);
+
 
 #endif
