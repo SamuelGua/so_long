@@ -59,8 +59,8 @@ clean:
 	@$(RM) $(OBJS)
 
 fclean: clean
-	@$(MAKE) -C mlx/ clean
 	@$(RM) $(OBJ_DIR) $(NAME)
+	@$(MAKE) -C mlx/ clean
 	
 
 re:
@@ -68,4 +68,4 @@ re:
 	@$(MAKE) fclean
 	@$(MAKE) all
 
-
+.PHONY: all clean fclean re

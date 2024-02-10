@@ -6,27 +6,11 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 22:41:23 by meca_971          #+#    #+#             */
-/*   Updated: 2024/02/08 20:52:12 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/10 16:38:03 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	made_mouv(t_data *data, int keycode, int x, int y)
-{
-	data->maps->maps[data->maps->pos_x][data->maps->pos_y] = '0';
-	score(data, keycode);
-	if (y != 0 && y == -1)
-		data->maps->maps[data->maps->pos_x][data->maps->pos_y - 1] = 'P';
-	if (y != 0 && y == +1)
-		data->maps->maps[data->maps->pos_x][data->maps->pos_y + 1] = 'P';
-	if (x != 0 && x == -1)
-		data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] = 'P';
-	if (x != 0 && x == +1)
-		data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] = 'P';
-	if (data->maps->maps[data->maps->exit_x][data->maps->exit_y] == '0')
-		data->maps->maps[data->maps->exit_x][data->maps->exit_y] = 'E';
-}
 
 int	key_capt(int keycode, t_data *data)
 {
@@ -50,27 +34,36 @@ int	key_capt(int keycode, t_data *data)
 	return (0);
 }
 
-void	fenetre(t_data *data)
+void	protect_windows(t_data *data, char *str)
+{
+	ft_printf("%s\n", str);
+	free(data->win);
+	ft_free(data->maps->maps);
+	free(data->maps);
+	free(data);
+	exit(1);
+}
+
+void	show_mlx(t_data *data)
 {
 	data->win = ft_calloc(sizeof(t_win), 1);
 	if (data->win == NULL)
 		return ;
 	data->win->mlx_ptr = mlx_init();
 	if (data->win->mlx_ptr == NULL)
-	{
-		ft_printf("Error no DISPLAY ENV mlx_init not init\n");
-		free(data->win);
-		ft_free(data->maps->maps);
-		free(data->maps);
-		free(data);
-		exit(1);
-	}
+		return (protect_windows(data, "Error no DISPLAY ENV"));
 	check_screen(data);
 	init_img(data);
 	data->win->win_ptr = mlx_new_window(data->win->mlx_ptr,
 			(data->maps->x - 1) * 50, data->maps->y * 50, "so_long !");
+	if (data->win->win_ptr == NULL)
+	{
+		free(data->win->mlx_ptr);
+		return (protect_windows(data, "Windows init"));
+	}
 	put_img(data);
 	found_pos(data->maps, 'P');
+	mlx_loop_hook(data->win->win_ptr, put_img, (void *)&data);
 	mlx_hook(data->win->win_ptr, 2, 1L << 0, key_capt, data);
 	mlx_hook(data->win->win_ptr, 17, 1L << 17, close_window, data);
 	mlx_loop(data->win->mlx_ptr);
@@ -83,11 +76,14 @@ int	check_extension(char **av)
 
 	i = ft_strlen(av[1]);
 	x = 0;
-	while (x <= i - 4)
+	if (i > 4)
+		if (av[1][i - 5] == '/')
+			return (1);
+	while (x < i - 4)
 		x++;
-	if (ft_strnstr(&av[1][x], ".ber", 5) == NULL)
-		return (0);
-	return (1);
+	if (ft_strnstr(&av[1][x], ".ber", 4) == NULL || i <= 4)
+		return (1);
+	return (0);
 }
 
 int	main(int ac, char **av)
@@ -108,5 +104,5 @@ int	main(int ac, char **av)
 		return (free(data), 1);
 	data->mouv = 0;
 	data->coins = 0;
-	fenetre(data);
+	show_mlx(data);
 }

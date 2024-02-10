@@ -6,11 +6,27 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:51:10 by scely             #+#    #+#             */
-/*   Updated: 2024/02/08 20:52:06 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/10 15:27:04 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	made_mouv(t_data *data, int keycode, int x, int y)
+{
+	data->maps->maps[data->maps->pos_x][data->maps->pos_y] = '0';
+	score(data, keycode);
+	if (y != 0 && y == -1)
+		data->maps->maps[data->maps->pos_x][data->maps->pos_y - 1] = 'P';
+	if (y != 0 && y == +1)
+		data->maps->maps[data->maps->pos_x][data->maps->pos_y + 1] = 'P';
+	if (x != 0 && x == -1)
+		data->maps->maps[data->maps->pos_x - 1][data->maps->pos_y] = 'P';
+	if (x != 0 && x == +1)
+		data->maps->maps[data->maps->pos_x + 1][data->maps->pos_y] = 'P';
+	if (data->maps->maps[data->maps->exit_x][data->maps->exit_y] == '0')
+		data->maps->maps[data->maps->exit_x][data->maps->exit_y] = 'E';
+}
 
 void	score(t_data *data, int keycode)
 {

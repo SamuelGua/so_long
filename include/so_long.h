@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 08:51:21 by scely             #+#    #+#             */
-/*   Updated: 2024/02/08 20:58:21 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/10 16:39:03 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct data_store
 	t_win	*win;
 	int		mouv;
 	int		coins;
+	void	*background;
 }	t_data;
 
 //parsing utils
@@ -98,7 +99,7 @@ int		found_pos(t_maps *maps, char c);
 
 //so_long utils
 void	put_img2(t_data *data, int i, int j);
-void	put_img(t_data *data);
+int		put_img(void *data);
 int		init_img(t_data *data);
 int		check_screen(t_data *data);
 
@@ -106,5 +107,6 @@ int		check_screen(t_data *data);
 void	score(t_data *data, int keycode);
 void	game_exit1(t_data *data, int keycode);
 void	game_exit(t_data *data, int keycode);
+void	made_mouv(t_data *data, int keycode, int x, int y);
 
 #endif

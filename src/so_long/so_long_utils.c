@@ -6,7 +6,7 @@
 /*   By: scely <scely@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:45:58 by scely             #+#    #+#             */
-/*   Updated: 2024/02/08 20:50:05 by scely            ###   ########.fr       */
+/*   Updated: 2024/02/10 14:55:05 by scely            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,20 @@ void	put_img2(t_data *data, int i, int j)
 	}
 }
 
-void	put_img(t_data *data)
+int	put_img(void *tmp)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	t_data	*data;
 
-	mlx_clear_window(data->win->mlx_ptr, data->win->win_ptr);
+	data = (t_data *)tmp;
 	i = -1;
 	while (data->maps->maps[++i])
 	{
 		j = -1;
 		put_img2(data, i, j);
 	}
+	return (0);
 }
 
 int	init_img(t_data *data)
